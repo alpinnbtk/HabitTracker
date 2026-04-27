@@ -24,6 +24,8 @@ class HabitAdapter(val habitList: ArrayList<Habit>)
         holder.binding.txtProgress.text = "${habit.progress} / ${habit.goal}"
         holder.binding.txtUnit.text = habit.unit
 
+        holder.binding.imgIcon.setImageResource(habit.icon)
+
         holder.binding.progressBar.max = habit.goal
         holder.binding.progressBar.progress = habit.progress
 
@@ -31,6 +33,8 @@ class HabitAdapter(val habitList: ArrayList<Habit>)
         if (habit.progress >= habit.goal) {
             holder.binding.txtStatus.text = "Completed"
             holder.binding.txtStatus.setBackgroundResource(R.drawable.bg_status_done)
+            holder.binding.btnPlus.isEnabled = false
+            holder.binding.btnMin.isEnabled = false
         }
         else
         {

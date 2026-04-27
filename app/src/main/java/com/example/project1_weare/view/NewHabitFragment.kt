@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.project1_weare.R
 import com.example.project1_weare.databinding.FragmentNewHabitBinding
 import com.example.project1_weare.model.Habit
 import com.example.project1_weare.viewmodel.HabitViewModel
@@ -15,6 +17,15 @@ class NewHabitFragment : Fragment() {
 
     private lateinit var binding: FragmentNewHabitBinding
     private lateinit var viewModel: HabitViewModel
+
+    private val iconNames = listOf("Fitness", "Study", "Nutrition", "Wellness")
+
+    private val iconResources = listOf(
+        R.drawable.muscle,
+        R.drawable.book,
+        R.drawable.food,
+        R.drawable.wellness
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +41,14 @@ class NewHabitFragment : Fragment() {
         // ini pake requireActivity boleh kah?
         viewModel = ViewModelProvider(requireActivity())[HabitViewModel::class.java]
 
+        val adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            iconNames
+        )
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerIcon.adapter = adapter
 
         binding.btnCreate.setOnClickListener {
 
@@ -37,6 +56,8 @@ class NewHabitFragment : Fragment() {
             val desc = binding.txtDesc.text.toString()
             val goal = binding.txtGoal.text.toString()
             val unit = binding.txtUnit.text.toString()
+            val icon = iconResources[binding.spinnerIcon.selectedItemPosition]
+
 
             if (name.isEmpty() || desc.isEmpty() || goal.isEmpty()) {
                 binding.txtName.error = "Tidak boleh kosong"
@@ -49,8 +70,7 @@ class NewHabitFragment : Fragment() {
                 goal.toInt(),
                 unit,
                 0,
-                android.R.drawable.ic_menu_compass,
-
+                icon,
             )
 
             viewModel.addHabit(habit)

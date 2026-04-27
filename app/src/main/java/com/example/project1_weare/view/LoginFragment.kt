@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.project1_weare.R
 import com.example.project1_weare.databinding.FragmentLoginBinding
+import com.example.project1_weare.model.UserData
 
 
 
@@ -20,6 +21,8 @@ import com.example.project1_weare.databinding.FragmentLoginBinding
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +40,11 @@ class LoginFragment : Fragment() {
             val username = binding.txtUsername.text.toString()
             val password = binding.txtPassword.text.toString()
 
-            if (username == "student" && password == "123") {
+            val isValid = UserData.arrUser.any {
+                it.username == username && it.password == password
+            }
+
+            if (isValid) {
                 findNavController().navigate(
                     R.id.action_dashboard
                 )

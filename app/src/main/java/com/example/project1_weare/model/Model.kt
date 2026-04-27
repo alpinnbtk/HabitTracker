@@ -8,3 +8,8 @@ data class Habit(
     var progress: Int = 0,
     var icon: Int
 )
+
+data class User(
+    var username: String,
+    var password: String
+)

@@ -57,12 +57,7 @@ class NewHabitFragment : Fragment() {
             val goal = binding.txtGoal.text.toString()
             val unit = binding.txtUnit.text.toString()
             val icon = iconResources[binding.spinnerIcon.selectedItemPosition]
-
-
-            if (name.isEmpty() || desc.isEmpty() || goal.isEmpty()) {
-                binding.txtName.error = "Tidak boleh kosong"
-                return@setOnClickListener
-            }
+            
 
             val habit = Habit(
                 name,

@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 class DashboardFragment : Fragment() {
 
     private lateinit var viewModel: HabitViewModel
-    private val habitAdapter = HabitAdapter(arrayListOf())
+    private lateinit var habitAdapter: HabitAdapter
     private lateinit var binding: FragmentDashboardBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +38,11 @@ class DashboardFragment : Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[HabitViewModel::class.java]
 
-        viewModel.loadHabits()
+        viewModel.loadFromFile()
+
+        habitAdapter = HabitAdapter(arrayListOf(), viewModel)
+
+        // viewModel.loadHabits()
 
 
         binding.recyclerHabits.layoutManager = LinearLayoutManager(context)

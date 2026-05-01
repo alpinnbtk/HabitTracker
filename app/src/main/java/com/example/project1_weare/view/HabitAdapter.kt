@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.project1_weare.databinding.ItemHabitBinding
 import com.example.project1_weare.model.Habit
 import com.example.project1_weare.R
-class HabitAdapter(val habitList: ArrayList<Habit>)
+import com.example.project1_weare.viewmodel.HabitViewModel
+
+class HabitAdapter(val habitList: ArrayList<Habit>, private val viewModel: HabitViewModel)
     : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitViewHolder {
@@ -46,6 +48,7 @@ class HabitAdapter(val habitList: ArrayList<Habit>)
             if (habit.progress < habit.goal) {
                 habit.progress++
                 notifyItemChanged(position)
+                viewModel.saveToFile()
             }
         }
 
@@ -53,6 +56,7 @@ class HabitAdapter(val habitList: ArrayList<Habit>)
             if (habit.progress > 0) {
                 habit.progress--
                 notifyItemChanged(position)
+                viewModel.saveToFile()
             }
         }
     }

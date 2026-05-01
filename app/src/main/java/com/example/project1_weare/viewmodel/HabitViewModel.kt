@@ -4,6 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.project1_weare.model.Habit
+import com.example.project1_weare.util.FileHelper
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class HabitViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -25,6 +28,7 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
     fun addHabit(habit: Habit) {
         habitList.add(habit)
         habits.value = ArrayList(habitList)
+        saveToFile()
     }
 
     fun tambahProgress(position: Int) {
@@ -32,6 +36,7 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
         if (habit.progress < habit.goal) {
             habit.progress++
             habits.value = ArrayList(habitList)
+            saveToFile()
         }
     }
 
@@ -40,6 +45,28 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
         if (habit.progress > 0) {
             habit.progress--
             habits.value = ArrayList(habitList)
+            saveToFile()
         }
+    }
+
+    fun loadFromFile() {
+        val helper = FileHelper(getApplication())
+        val json = helper.readFromFile()
+
+        if (json.isNotEmpty()) {
+            val type = object : TypeToken<ArrayList<Habit>>() {}.type
+            val list: ArrayList<Habit> = Gson().fromJson(json, type)
+
+            habitList.clear()
+            habitList.addAll(list)
+
+            habits.value = ArrayList(habitList)
+        }
+    }
+
+    fun saveToFile() {
+        val helper = FileHelper(getApplication())
+        val json = Gson().toJson(habitList)
+        helper.writeToFile(json)
     }
 }
